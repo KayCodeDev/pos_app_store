@@ -13,6 +13,11 @@ This project uses a number of open source projects to work properly:
 * [MQTT]
 * [WebSocket]
 * [MYSQL]
+* [AWS_EC2]
+* [SONARQUBE]
+* [AzureDevOps]
+* [Docker]
+* [AWS_ECR]
 
 Store features and functionalities
 * App Store Service

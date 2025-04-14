@@ -7,8 +7,8 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  repoName: 'itexstore-registry-staging'
-  imageName: 'itexstoreapi_app'
+  repoName: 'appstore-registry-staging'
+  imageName: 'appstoreapi_app'
   tag: 'latest'
   ec2Host: $(AWS_EC2_HOST)
   ec2RegionName: 'us-west-2'
@@ -16,47 +16,47 @@ variables:
   awsSecret: $(AWS_SECRET)
   awsSecurityGroup: $(AWS_SECURITY_GROUP)
   sonarConnection: 'sonarqube'
-  projectKey: 'ITEXSTORE-SONAR-SCAN'
-  projectName: 'ITEXSTORE'
+  projectKey: 'APPSTORE-SONAR-SCAN'
+  projectName: 'APPSTORE'
 
 steps:
-# - task: SonarQubePrepare@5
-#   inputs:
-#     SonarQube: 'sonarqube'
-#     scannerMode: 'Other'
-#     configMode: 'manual'
-#     manualProjectKey: 'ITEXSTORE-SONAR-SCAN'
-#     manualProjectName: 'ITEXSTORE'
-#     extraProperties: |
-#       sonar.projectKey=ITEXSTORE-SONAR-SCAN
-#       sonar.projectName=ITEXSTORE
+- task: SonarQubePrepare@5
+  inputs:
+    SonarQube: 'sonarqube'
+    scannerMode: 'Other'
+    configMode: 'manual'
+    manualProjectKey: 'ITEXSTORE-SONAR-SCAN'
+    manualProjectName: 'ITEXSTORE'
+    extraProperties: |
+      sonar.projectKey=ITEXSTORE-SONAR-SCAN
+      sonar.projectName=ITEXSTORE
 
-# - task: JavaToolInstaller@0
-#   inputs:
-#     versionSpec: '21'
-#     jdkArchitectureOption: 'x64'    
-#     jdkSourceOption: 'PreInstalled'
+- task: JavaToolInstaller@0
+  inputs:
+    versionSpec: '21'
+    jdkArchitectureOption: 'x64'    
+    jdkSourceOption: 'PreInstalled'
 
-# - script: |
-#     # Filter out non-compatible SonarQube parameters
-#     FILTERED_PARAMS=$(echo $SONARQUBE_SCANNER_PARAMS | sed 's/"sonar.branch.name":"[^"]*"\,//g')
-#     echo "##vso[task.setvariable variable=SONARQUBE_SCANNER_PARAMS]$FILTERED_PARAMS"
-#   displayName: Filter out non-CE sonar parameters
+- script: |
+    # Filter out non-compatible SonarQube parameters
+    FILTERED_PARAMS=$(echo $SONARQUBE_SCANNER_PARAMS | sed 's/"sonar.branch.name":"[^"]*"\,//g')
+    echo "##vso[task.setvariable variable=SONARQUBE_SCANNER_PARAMS]$FILTERED_PARAMS"
+  displayName: Filter out non-CE sonar parameters
 
-# - task: Maven@3
-#   inputs:
-#     mavenPomFile: 'pom.xml'
-#     goals: 'clean package'
-#     options: '-DskipTests'
-#     publishJUnitResults: true
-#     testResultsFiles: '**/TEST-*.xml'
-#     sonarQubeRunAnalysis: true
+- task: Maven@3
+  inputs:
+    mavenPomFile: 'pom.xml'
+    goals: 'clean package'
+    options: '-DskipTests'
+    publishJUnitResults: true
+    testResultsFiles: '**/TEST-*.xml'
+    sonarQubeRunAnalysis: true
 
-# - task: SonarQubeAnalyze@5
+- task: SonarQubeAnalyze@5
 
-# - task: SonarQubePublish@5
-#   inputs:
-#     pollingTimeoutSec: '300'    
+- task: SonarQubePublish@5
+  inputs:
+    pollingTimeoutSec: '300'    
 
   
 - task: DockerCompose@1
@@ -100,14 +100,14 @@ steps:
 - task: InstallSSHKey@0
   inputs:
       knownHostsEntry: '$(ec2Host)'
-      sshKeySecureFile: 'ITEXSTORE_STAGING.pem'
+      sshKeySecureFile: 'APPSTORE_STAGING.pem'
 
 - task: SSH@0
   inputs:
       sshEndpoint: 'aws_ssh_connection'
       runOptions: 'commands'
       commands: |
-           cd /opt/itexstore/itexstore_api && sudo ./pull_image.sh
+           cd /opt/appstore/appstore_api && sudo ./pull_image.sh
   displayName: 'Deploy and Run Docker Container on EC2'
   continueOnError: true
 

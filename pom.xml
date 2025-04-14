@@ -8,12 +8,12 @@
 		<version>3.2.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.iisysgroup</groupId>
-	<artifactId>itexstore</artifactId>
+	<groupId>com.kaydev</groupId>
+	<artifactId>appstore</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>itexstore</name>
-	<description>ITEX Store Backend</description>
+	<name>appstore</name>
+	<description>App Store Backend</description>
 	<properties> 
 		<java.version>21</java.version>
 	</properties>
@@ -189,8 +189,8 @@
 	</build>
 	<developers>
 		<developer>
-			<name>Kenneth Osekhuemen</name>
-			<organization>ITEX Integrated Services</organization>
+			<name>Kenneth Imadojemun</name>
+			<organization>KayDevCode</organization>
 		</developer>
 	</developers>
 </project>

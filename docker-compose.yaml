@@ -4,17 +4,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: itexstore-container
+    container_name: appstore-container
     tty: true
     ports:
       - "9090:9090"
-      # - "9091:9091"
-      # - "9092:9092"
     environment:
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
     volumes:
-      - /opt/itexstore/itexstore_api/logs:/app/logs
-      # - /Users/kennethosekhuemen/Projects/itex_store/itexstore_api/logs:/app/logs
+      - /opt/appstore/appstore_api/logs:/app/logs
     logging:
       driver: json-file
       options:
@@ -23,7 +20,7 @@ services:
     networks:
       - hostnetwork
 
-name: itexstore_api
+name: appstore_api
 
 networks:
   hostnetwork:

@@ -7,8 +7,8 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  repoName: 'itexstore-registry-staging'
-  imageName: 'itexstoreapi_app'
+  repoName: 'appstore-registry-staging'
+  imageName: 'appstoreapi_app'
   tag: 'latest'
   ec2Host: $(AWS_EC2_HOST)
   ec2RegionName: 'us-east-1'
@@ -58,14 +58,14 @@ steps:
 - task: InstallSSHKey@0
   inputs:
       knownHostsEntry: '$(ec2Host)'
-      sshKeySecureFile: 'itexstore_rsa_key.pem'
+      sshKeySecureFile: 'appstore_rsa_key.pem'
 
 - task: SSH@0
   inputs:
       sshEndpoint: 'aws_ssh_connection_prod'
       runOptions: 'commands'
       commands: |
-           cd /opt/itexstore/itexstore_api && sudo ./pull_image.sh
+           cd /opt/appstore/appstore_api && sudo ./pull_image.sh
   displayName: 'Deploy and Run Docker Container on EC2'
   continueOnError: true
 
