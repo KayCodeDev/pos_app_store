@@ -1,0 +1,120 @@
+trigger:
+  branches:
+    include:
+      - staging
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  repoName: 'itexstore-registry-staging'
+  imageName: 'itexstoreapi_app'
+  tag: 'latest'
+  ec2Host: $(AWS_EC2_HOST)
+  ec2RegionName: 'us-west-2'
+  awsKey: $(AWS_KEY)
+  awsSecret: $(AWS_SECRET)
+  awsSecurityGroup: $(AWS_SECURITY_GROUP)
+  sonarConnection: 'sonarqube'
+  projectKey: 'ITEXSTORE-SONAR-SCAN'
+  projectName: 'ITEXSTORE'
+
+steps:
+# - task: SonarQubePrepare@5
+#   inputs:
+#     SonarQube: 'sonarqube'
+#     scannerMode: 'Other'
+#     configMode: 'manual'
+#     manualProjectKey: 'ITEXSTORE-SONAR-SCAN'
+#     manualProjectName: 'ITEXSTORE'
+#     extraProperties: |
+#       sonar.projectKey=ITEXSTORE-SONAR-SCAN
+#       sonar.projectName=ITEXSTORE
+
+# - task: JavaToolInstaller@0
+#   inputs:
+#     versionSpec: '21'
+#     jdkArchitectureOption: 'x64'    
+#     jdkSourceOption: 'PreInstalled'
+
+# - script: |
+#     # Filter out non-compatible SonarQube parameters
+#     FILTERED_PARAMS=$(echo $SONARQUBE_SCANNER_PARAMS | sed 's/"sonar.branch.name":"[^"]*"\,//g')
+#     echo "##vso[task.setvariable variable=SONARQUBE_SCANNER_PARAMS]$FILTERED_PARAMS"
+#   displayName: Filter out non-CE sonar parameters
+
+# - task: Maven@3
+#   inputs:
+#     mavenPomFile: 'pom.xml'
+#     goals: 'clean package'
+#     options: '-DskipTests'
+#     publishJUnitResults: true
+#     testResultsFiles: '**/TEST-*.xml'
+#     sonarQubeRunAnalysis: true
+
+# - task: SonarQubeAnalyze@5
+
+# - task: SonarQubePublish@5
+#   inputs:
+#     pollingTimeoutSec: '300'    
+
+  
+- task: DockerCompose@1
+  displayName: 'Build Docker Images'
+  inputs:
+    action: 'Build services'
+    dockerComposeFile: '$(Build.SourcesDirectory)/docker-compose.yaml'
+    additionalImageTags: |
+      $(tag)
+
+- task: ECRPushImage@1
+  inputs:
+    awsCredentials: 'aws_ecr_connection'
+    regionName: 'us-west-2'
+    imageSource: 'imageid'
+    sourceImageId: '$(imageName):$(tag)'
+    repositoryName: '$(repoName)'
+    pushTag: '$(tag)'
+    forceDockerNamingConventions: true
+
+- script: |
+      AGENT_IP=$(curl -s https://api.ipify.org)
+      echo "Agent IP: $AGENT_IP"
+            
+      aws configure set aws_access_key_id $(awsKey)
+      aws configure set aws_secret_access_key $(awsSecret)
+      aws configure set default.region $(ec2RegionName)
+
+      SECURITY_GROUP_ID=$(awsSecurityGroup)
+
+      EXISTS=$(aws ec2 describe-security-groups --group-ids $SECURITY_GROUP_ID --query "SecurityGroups[0].IpPermissions[?ToPort==22 && FromPort==22].IpRanges[?CidrIp=='$AGENT_IP/32']" --output text)
+
+      if [ -z "$EXISTS" ]; then
+        echo "Adding IP $AGENT_IP to security group $SECURITY_GROUP_ID"
+        aws ec2 authorize-security-group-ingress --group-id $SECURITY_GROUP_ID --protocol tcp --port 22 --cidr $AGENT_IP/32
+      else
+        echo "IP $AGENT_IP is already in the security group $SECURITY_GROUP_ID"
+      fi
+  displayName: 'Add IP to Security Group'
+
+- task: InstallSSHKey@0
+  inputs:
+      knownHostsEntry: '$(ec2Host)'
+      sshKeySecureFile: 'ITEXSTORE_STAGING.pem'
+
+- task: SSH@0
+  inputs:
+      sshEndpoint: 'aws_ssh_connection'
+      runOptions: 'commands'
+      commands: |
+           cd /opt/itexstore/itexstore_api && sudo ./pull_image.sh
+  displayName: 'Deploy and Run Docker Container on EC2'
+  continueOnError: true
+
+- script: |
+      AGENT_IP=$(curl -s https://api.ipify.org)
+      echo "Agent IP: $AGENT_IP"
+      
+      echo "Removing IP $AGENT_IP from security group $(awsSecurityGroup)"
+      aws ec2 revoke-security-group-ingress --group-id $(awsSecurityGroup) --protocol tcp --port 22 --cidr $AGENT_IP/32
+  displayName: 'Remove IP from Security Group'

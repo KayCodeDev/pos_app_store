@@ -1,0 +1,132 @@
+[
+    {
+        "name": "STORE_LIST",
+        "roleType": "ALL",
+        "description": "View store list"
+    },
+    {
+        "name": "VIEW_STORE_APP",
+        "roleType": "ALL",
+        "description": "View store app"
+    },
+    {
+        "name": "SUBMIT_APP",
+        "roleType": "ALL",
+        "description": "Submit app to store"
+    },
+    {
+        "name": "DELETE_APP",
+        "roleType": "ALL",
+        "description": "Delete app from store"
+    },
+    {
+        "name": "VIEW_DEVELOPER",
+        "roleType": "ADMIN",
+        "description": "View developer"
+    },
+    {
+        "name": "VIEW_SUBCRIPTIONS",
+        "roleType": "ALL",
+        "description": "View developer subscriptions"
+    },
+    {
+        "name": "ADD_SUBSCRIPTIONS",
+        "roleType": "ADMIN",
+        "description": "Add developer subscriptions"
+    },
+    {
+        "name": "CREATE_DEVELOPER",
+        "roleType": "ADMIN",
+        "description": "Create developer"
+    },
+    {
+        "name": "CREATE_DISTRIBUTOR",
+        "roleType": "DEVELOPER",
+        "description": "Create Distributor"
+    },
+    {
+        "name": "VIEW_DISTRIBUTOR",
+        "roleType": "ALL",
+        "description": "View distributor"
+    },
+    {
+        "name": "CREATE_GROUP",
+        "roleType": "DEVELOPER",
+        "description": "Create group"
+    },
+    {
+        "name": "GROUP_LIST",
+        "roleType": "DEVELOPER",
+        "description": "List group"
+    },
+    {
+        "name": "VIEW_GROUP",
+        "roleType": "DEVELOPER",
+        "description": "View group"
+    },
+    {
+        "name": "REMOTE_LIST",
+        "roleType": "ALL",
+        "description": "View remote"
+    },
+    {
+        "name": "CREATE_REMOTE",
+        "roleType": "DEVELOPER",
+        "description": "Create remote connection"
+    },
+    {
+        "name": "MANAGE_RESOURCE",
+        "roleType": "ADMIN",
+        "description": "Manage resource"
+    },
+    {
+        "name": "TASK_LIST",
+        "roleType": "ALL",
+        "description": "Task list"
+    },
+    {
+        "name": "VIEW_TASK",
+        "roleType": "ALL",
+        "description": "View task"
+    },
+    {
+        "name": "CREATE_TASK",
+        "roleType": "ALL",
+        "description": "Create task"
+    },
+    {
+        "name": "TERMINAL_LIST",
+        "roleType": "ALL",
+        "description": "Terminal list"
+    },
+    {
+        "name": "TERMINAL_LIST",
+        "roleType": "ALL",
+        "description": "Terminal list"
+    },
+    {
+        "name": "VIEW_TERMINAL",
+        "roleType": "ALL",
+        "description": "View terminal"
+    },
+    {
+        "name": "CREATE_TERMINAL",
+        "roleType": "ALL",
+        "description": "Create terminal"
+    },
+    {
+        "name": "USER_LIST",
+        "roleType": "ALL",
+        "description": "User list"
+    },
+    {
+        "name": "VIEW_USER",
+        "roleType": "ALL",
+        "description": "View user"
+    },
+    {
+        "name": "CREATE_USER",
+        "roleType": "ALL",
+        "description": "Create user"
+    }
+]
