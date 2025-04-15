@@ -46,11 +46,9 @@ git clone [Project Repo]
 # Get into the directory
 cd pos_app_store
 
-# Install dependencies
-flutter pub get
+# Run API
+mvn spring-boot:run
 
-# run app on simulator or physical device
-flutter run
 ```
 
 **Enjoy :)**
