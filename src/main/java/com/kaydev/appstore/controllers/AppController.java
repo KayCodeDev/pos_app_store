@@ -1,4 +1,4 @@
-package com.iisysgroup.itexstore.controllers;
+package com.kaydev.appstore.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.iisysgroup.itexstore.handlers.AppHandler;
-import com.iisysgroup.itexstore.models.dto.request.is.EditAppRequest;
-import com.iisysgroup.itexstore.models.dto.request.is.SearchParams;
-import com.iisysgroup.itexstore.models.dto.request.is.SubmitAppRequest;
-import com.iisysgroup.itexstore.models.dto.request.is.SubmitAppVersionRequest;
-import com.iisysgroup.itexstore.models.dto.response.BaseResponse;
-import com.iisysgroup.itexstore.models.dto.response.GenericResponse;
-import com.iisysgroup.itexstore.security.implementation.UserDetailsImpl;
+import com.kaydev.appstore.handlers.AppHandler;
+import com.kaydev.appstore.models.dto.request.is.EditAppRequest;
+import com.kaydev.appstore.models.dto.request.is.SearchParams;
+import com.kaydev.appstore.models.dto.request.is.SubmitAppRequest;
+import com.kaydev.appstore.models.dto.request.is.SubmitAppVersionRequest;
+import com.kaydev.appstore.models.dto.response.BaseResponse;
+import com.kaydev.appstore.models.dto.response.GenericResponse;
+import com.kaydev.appstore.security.implementation.UserDetailsImpl;
 
 @RestController
 @RequestMapping("/v1/is/app")

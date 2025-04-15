@@ -1,4 +1,4 @@
-package com.iisysgroup.itexstore.utils.validators.requiredif;
+package com.kaydev.appstore.utils.validators.requiredif;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
